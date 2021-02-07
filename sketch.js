@@ -1,46 +1,34 @@
-var ground,dustbin;
+
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
-
+var paper,ground,dustbin;
 function preload()
 {
 	
 }
 
 function setup() {
-	createCanvas(800, 700);
+	createCanvas(1600, 700);
 
 
 	engine = Engine.create();
 	world = engine.world;
 
 	//Create the Bodies Here.
-	dustbinPosition=width/2-100
-	dustbinY=610;
-
-	groundSprite=createSprite(width/2, height-35, width,10);
-	groundSprite.shapeColor=color("yellow");
-
-	dustbinleftSprite=createSprite(dustbinPosition,dustbinY, 20,100);
-	dustbinleftSprite.shapeColor=color(255,0,0);
-
-	dustbinLeftBody = Bodies.rectangle(dustbinPosition+20, dustbinY, 20,100 , {isStatic:true} );
- 	World.add(world, dustbinLeftBody);
-
- 	dustbinBase=createSprite(dustbinPosition+100, dustbinY+40, 200,20);
- 	dustbinBase.shapeColor=color(255,0,0);
-
- 	dustbinBottomBody = Bodies.rectangle(dustbinPosition+100,dustbinY+45-20, 200,20 , {isStatic:true} );
- 	World.add(world,dustbinBottomBody);
-
- 	dustbinleftSprite=createSprite(dustbinPosition+200 ,dustbinY, 20,100);
- 	dustbinleftSprite.shapeColor=color(255,0,0);
-
- 	dustbinRightBody = Bodies.rectangle(dustbinPosition+200-20 , dustbinY, 20,100 , {isStatic:true} );
- 	World.add(world, dustbinRightBody);
-
+	ground=new Ground(800,670,1600,20);
+	paper=new Paper(200,450,40);
+	dustbin=new Dustbin(1200,50)
+	var render = Render.create({
+		element: document.body,
+		engine: engine,
+		options: {
+		  width: 1200,
+		  height: 700,
+		  wireframes: false
+		}
+	  })
 	Engine.run(engine);
   
 }
@@ -49,10 +37,19 @@ function setup() {
 function draw() {
   rectMode(CENTER);
   background(0);
-  
+ 
   drawSprites();
- 
- 
+ paper.display();
+ ground.display();
+ dustbin.display();
+
+}
+function keyPressed() {
+	if (keyCode === UP_ARROW) {
+
+	  Matter.Body.applyForce(paperObject.body,paperObject.body.position,{x:85,y:-85});
+  
+	}
 }
 
 
